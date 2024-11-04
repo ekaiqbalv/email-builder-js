@@ -5,6 +5,14 @@
 import renderToStaticMarkup from './renderToStaticMarkup';
 
 describe('renderToStaticMarkup', () => {
+  beforeEach(() => {
+    global.window = {
+      document: {
+        querySelectorAll: jest.fn().mockReturnValue([]),
+      },
+    } as any;
+  });
+
   it('renders into a string', () => {
     const result = renderToStaticMarkup(
       {
@@ -19,6 +27,6 @@ describe('renderToStaticMarkup', () => {
       },
       { rootBlockId: 'root' }
     );
-    expect(result).toEqual('<!DOCTYPE html><html><body><div></div></body></html>');
+    expect(result).toMatchSnapshot();
   });
 });

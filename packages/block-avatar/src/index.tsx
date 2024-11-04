@@ -1,5 +1,10 @@
-import React, { CSSProperties } from 'react';
+/** @jsxRuntime automatic */
+/** @jsxImportSource @emotion/react */
+import { CSSProperties, useMemo } from 'react';
 import { z } from 'zod';
+
+import { css } from '@emotion/react';
+import { generateResponsiveStyles } from '@usewaypoint/shared';
 
 const PADDING_SCHEMA = z
   .object({
@@ -54,6 +59,20 @@ export const AvatarPropsDefaults = {
   shape: 'square',
 } as const;
 
+const SIZE_RATIOS = {
+  xs: 0.45,
+  sm: 0.65,
+  md: 0.85,
+  lg: 1,
+};
+
+const calculateResponsiveSizes = (desktopSize: number) => ({
+  xs: `${Math.round(desktopSize * SIZE_RATIOS.xs)}px`,
+  sm: `${Math.round(desktopSize * SIZE_RATIOS.sm)}px`,
+  md: `${Math.round(desktopSize * SIZE_RATIOS.md)}px`,
+  lg: `${desktopSize}px`,
+});
+
 export function Avatar({ style, props }: AvatarProps) {
   const size = props?.size ?? AvatarPropsDefaults.size;
   const imageUrl = props?.imageUrl ?? AvatarPropsDefaults.imageUrl;
@@ -64,6 +83,21 @@ export function Avatar({ style, props }: AvatarProps) {
     textAlign: style?.textAlign ?? undefined,
     padding: getPadding(style?.padding),
   };
+
+  const responsiveSizes = useMemo(() => calculateResponsiveSizes(size), [size]);
+
+  const imageCss = useMemo(
+    () => css`
+      ${generateResponsiveStyles({
+        xs: { height: responsiveSizes.xs, width: responsiveSizes.xs },
+        sm: { height: responsiveSizes.sm, width: responsiveSizes.sm },
+        md: { height: responsiveSizes.md, width: responsiveSizes.md },
+        lg: { height: responsiveSizes.lg, width: responsiveSizes.lg },
+      })}
+    `,
+    [responsiveSizes]
+  );
+
   return (
     <div style={sectionStyle}>
       <img
@@ -71,13 +105,12 @@ export function Avatar({ style, props }: AvatarProps) {
         src={imageUrl}
         height={size}
         width={size}
+        css={imageCss}
         style={{
           outline: 'none',
           border: 'none',
           textDecoration: 'none',
           objectFit: 'cover',
-          height: size,
-          width: size,
           maxWidth: '100%',
           display: 'inline-block',
           verticalAlign: 'middle',
