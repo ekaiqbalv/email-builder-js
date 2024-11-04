@@ -8,11 +8,15 @@
     "dist"
   ],
   "scripts": {
-    "build": "npx tsc",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
     "test": "npx jest"
   },
   "author": "carlos@usewaypoint.com",
   "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@testing-library/react": "^14.2.1",
@@ -28,7 +32,9 @@
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "tsup": "^8.0.2",
+    "turbo": "^2.2.3",
     "typescript": "^5.3.3",
     "zod": "^3.22.4"
-  }
+  },
+  "packageManager": "npm@10.8.2"
 }
