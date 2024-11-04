@@ -1,5 +1,10 @@
-import React, { CSSProperties } from 'react';
+/** @jsxRuntime automatic */
+/** @jsxImportSource @emotion/react */
+import { CSSProperties } from 'react';
 import { z } from 'zod';
+
+import { css } from '@emotion/react';
+import { generateResponsiveStyles } from '@usewaypoint/shared';
 
 const COLOR_SCHEMA = z
   .string()
@@ -97,26 +102,58 @@ export function Heading({ props, style }: HeadingProps) {
     textAlign: style?.textAlign ?? undefined,
     margin: 0,
     fontFamily: getFontFamily(style?.fontFamily),
-    fontSize: getFontSize(level),
     padding: getPadding(style?.padding),
   };
   switch (level) {
     case 'h1':
-      return <h1 style={hStyle}>{text}</h1>;
+      return (
+        <h1 css={getFontSize(level)} style={hStyle}>
+          {text}
+        </h1>
+      );
     case 'h2':
-      return <h2 style={hStyle}>{text}</h2>;
+      return (
+        <h2 css={getFontSize(level)} style={hStyle}>
+          {text}
+        </h2>
+      );
     case 'h3':
-      return <h3 style={hStyle}>{text}</h3>;
+      return (
+        <h3 css={getFontSize(level)} style={hStyle}>
+          {text}
+        </h3>
+      );
   }
 }
 
+const FONT_SIZES = {
+  h1: {
+    xs: '24px',
+    sm: '26px',
+    md: '30px',
+    lg: '32px',
+  },
+  h2: {
+    xs: '20px',
+    sm: '20px',
+    md: '24px',
+    lg: '24px',
+  },
+  h3: {
+    xs: '18px',
+    sm: '19px',
+    md: '20px',
+    lg: '20px',
+  },
+} as const;
+
 function getFontSize(level: 'h1' | 'h2' | 'h3') {
-  switch (level) {
-    case 'h1':
-      return 32;
-    case 'h2':
-      return 24;
-    case 'h3':
-      return 20;
-  }
+  return css`
+    ${generateResponsiveStyles({
+      xs: { 'font-size': FONT_SIZES[level].xs },
+      sm: { 'font-size': FONT_SIZES[level].sm },
+      md: { 'font-size': FONT_SIZES[level].md },
+      lg: { 'font-size': FONT_SIZES[level].lg },
+    })}
+  `;
 }
