@@ -1,0 +1,28 @@
+{
+  "name": "@usewaypoint/shared",
+  "version": "0.0.1",
+  "description": "Shared utilities for the email builder",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npx tsup src/index.ts --format cjs,esm --dts"
+  },
+  "author": "Eka Iqbal Virgiawan",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5"
+  }
+}
