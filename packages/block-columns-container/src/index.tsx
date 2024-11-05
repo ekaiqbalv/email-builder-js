@@ -1,5 +1,10 @@
-import React, { CSSProperties } from 'react';
+/** @jsxRuntime automatic */
+/** @jsxImportSource @emotion/react */
+import { CSSProperties } from 'react';
 import { z } from 'zod';
+
+import { css } from '@emotion/react';
+import { generateResponsiveStyles } from '@usewaypoint/shared';
 
 const COLOR_SCHEMA = z
   .string()
@@ -105,6 +110,7 @@ type Props = {
 function TableCell({ index, props, columns }: Props) {
   const contentAlignment = props?.contentAlignment ?? ColumnsContainerPropsDefaults.contentAlignment;
   const columnsCount = props?.columnsCount ?? ColumnsContainerPropsDefaults.columnsCount;
+  const columnsGap = props?.columnsGap ?? ColumnsContainerPropsDefaults.columnsGap;
 
   if (columnsCount === 2 && index === 2) {
     return null;
@@ -113,12 +119,30 @@ function TableCell({ index, props, columns }: Props) {
   const style: CSSProperties = {
     boxSizing: 'content-box',
     verticalAlign: contentAlignment,
-    paddingLeft: getPaddingBefore(index, props),
-    paddingRight: getPaddingAfter(index, props),
     width: props.fixedWidths?.[index] ?? undefined,
   };
   const children = (columns && columns[index]) ?? null;
-  return <td style={style}>{children}</td>;
+
+  const cellCss = css`
+    ${generateResponsiveStyles({
+      xs: {
+        display: 'block',
+        'padding-bottom': index < props.columnsCount - 1 ? `${columnsGap}px` : 'none',
+      },
+      sm: {
+        display: 'table-cell',
+        'padding-left': `${getPaddingBefore(index, props)}px`,
+        'padding-right': `${getPaddingAfter(index, props)}px`,
+        'padding-bottom': '0px',
+      },
+    })}
+  `;
+
+  return (
+    <td css={cellCss} style={style}>
+      {children}
+    </td>
+  );
 }
 
 function getPaddingBefore(index: number, { columnsGap, columnsCount }: Props['props']) {
