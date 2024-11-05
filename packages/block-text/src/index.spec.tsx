@@ -1,12 +1,20 @@
 import React from 'react';
 
+import { matchers } from '@emotion/jest';
 import { render } from '@testing-library/react';
 
 import { Text } from '.';
 
+expect.extend(matchers);
+
 describe('block-text', () => {
   it('renders with default values', () => {
     expect(render(<Text />).asFragment()).toMatchSnapshot();
+  });
+
+  it('component has correct styles', () => {
+    const { getByText } = render(<Text props={{ text: 'Hello, world!' }} style={{ fontSize: 16 }} />);
+    expect(getByText('Hello, world!')).toHaveStyleRule('font-size', 'clamp(12.8px, 1.5625vw, 16px)');
   });
 
   it('sanitizes HTML', () => {

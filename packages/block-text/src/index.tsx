@@ -1,5 +1,9 @@
-import React, { CSSProperties } from 'react';
+/** @jsxRuntime automatic */
+/** @jsxImportSource @emotion/react */
+import { CSSProperties } from 'react';
 import { z } from 'zod';
+
+import { css } from '@emotion/react';
 
 import EmailMarkdown from './EmailMarkdown';
 
@@ -85,6 +89,11 @@ export const TextPropsSchema = z.object({
 
 export type TextProps = z.infer<typeof TextPropsSchema>;
 
+const getFontSize = (fontSize: NonNullable<TextProps['style']>['fontSize']) =>
+  fontSize
+    ? `clamp(${fontSize / 1.25}px, ${fontSize / 1024 * 100}vw, ${fontSize}px)`
+    : undefined;
+
 export const TextPropsDefaults = {
   text: '',
 };
@@ -93,7 +102,6 @@ export function Text({ style, props }: TextProps) {
   const wStyle: CSSProperties = {
     color: style?.color ?? undefined,
     backgroundColor: style?.backgroundColor ?? undefined,
-    fontSize: style?.fontSize ?? undefined,
     fontFamily: getFontFamily(style?.fontFamily),
     fontWeight: style?.fontWeight ?? undefined,
     textAlign: style?.textAlign ?? undefined,
@@ -104,5 +112,5 @@ export function Text({ style, props }: TextProps) {
   if (props?.markdown) {
     return <EmailMarkdown style={wStyle} markdown={text} />;
   }
-  return <div style={wStyle}>{text}</div>;
+  return <div css={css`font-size: ${getFontSize(style?.fontSize)}`} style={wStyle}>{text}</div>;
 }
