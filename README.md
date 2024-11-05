@@ -17,7 +17,7 @@ The original EmailBuilder.js is a powerful free tool for creating email template
 The original project does not use a workspace to manage multiple packages, so I have set up the project with Turborepo to improve the development experience. This setup enables better dependency management, faster builds through intelligent caching, and a more organized project structure for managing multiple packages and components
 
 ### Customizable Breakpoints
-I have added a breakpoint configuration that allows developers to define screen size thresholds. These breakpoints is used for the responsive components, and can be customized in the 'shared/breakpoints.ts' file.
+I have added a breakpoint configuration that allows developers to define screen size thresholds. These breakpoints is used for the responsive components, and can be customized in 'responsive.ts' file inside the 'shared' package.
 
 ### Enhanced Responsive Components
 Some components have been enhanced to handle responsive. These components now automatically adjusts its layout, size and other properties based on the viewer's screen size. This ensures your emails look great across all devices, from desktop computers to mobile phones.
